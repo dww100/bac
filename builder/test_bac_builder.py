@@ -7,8 +7,15 @@ from operator import itemgetter, attrgetter
 from nose.tools import assert_equals
 
 
-def test_mutation():
+def test_mutation_all():
   u = load_pdb("../data/minimal_test.pdb")
   s = u.selectAtoms("all")
   s = mutate_residue(s, 'PRO', new_residue_name='ALA')
   write_pdb_file(s, "test.pdb")
+
+
+def test_mutation_pro():
+  u = load_pdb("../data/minimal_test.pdb")
+  s = u.selectAtoms("resname PRO")
+  s = mutate_residue(s, 'PRO', new_residue_name='ALA')
+  assert_equals(len(s), 1)

@@ -1,4 +1,4 @@
-from common.io_pdb import *
+from common.pdb_io import *
 
 def mutate_residue(atomgroup, resname, new_residue_name=''):
   if resname == new_residue_name:

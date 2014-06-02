@@ -1,7 +1,8 @@
 # This Test opens a simple pdb file (data/init_pdbs/pr/1mui_wat.pdb)
 # It then attempts to manipulate this file using MDAnalyis.
 
-from pdb_io import *
+from common.pdb_io import *
+from bac_builder import *
 from operator import itemgetter, attrgetter
 from nose.tools import assert_equals
 

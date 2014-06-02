@@ -20,7 +20,7 @@ def test_mutation_pro():
   s = mutate_residue(s, 'PRO', new_residue_name='ALA')
   assert_equals(len(s), 1)
 
-def test_mutation_15mui_wat():
+def test_mutation_1mui_wat():
   u = load_pdb("../data/init_pdbs/pr/1mui_wat.pdb")
   ab = u.selectAtoms("segid A or segid B")
   x = u.selectAtoms("segid X")

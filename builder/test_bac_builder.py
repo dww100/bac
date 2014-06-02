@@ -33,3 +33,18 @@ def test_mutation_1mui_wat():
   write_pdb_file(ab, "ab.pdb")
   write_pdb_file(x, "x.pdb")
   write_pdb_file(s, "s.pdb")
+
+def test_amber_parameterize():
+  
+  specification = {
+      'TARGET_DIR':'../test/',
+      'FF':'leaprc.ff03.r1',
+      'FRCMOD':'../data/amber/drugs/pr/resp/lpv/lpv.frcmod',
+      'PREP':'../data/amber/drugs/pr/resp/lpv/lpv.prep',
+      'LIGAND_PDB':'../data/test_lig.pdb',
+      'RECEPTOR_PDB':'../data/test_rec.pdb',
+      'SOLVENT_PDB':'../data/test_sol.pdb',
+      'WATERBOX':'14 iso'
+  }
+  
+  amber_parameterize(specification)

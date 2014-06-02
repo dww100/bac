@@ -1,4 +1,5 @@
 from common.pdb_io import *
+import subprocess
 
 def mutate_residue(atomgroup, resname, new_residue_name=''):
   if resname == new_residue_name:
@@ -19,18 +20,26 @@ def edit_leap_input(specification, filename):
     
     template = 'tleap_template.txt'
 
-    with open(template, 'r') as f:
-        temp_text = f.read()
-
-    f = open(filename, 'w')    
+    out_file = open(filename, 'w')    
     
-    for line in temp_text:
-        # Perform variable substitution on each line        
-        for var_name, value in specification.items():
-            out_line = line.replace('$%s' % var_name, value)
-            f.write(line)
+    with open(template, 'r') as f:
+        for line in f:
+            for var_name, value in specification.items():
+                line = line.replace('$%s' % var_name, value)
+            out_file.write(line)
             
-    f.close()
+    out_file.close()
     
     return
+
+def amber_parameterize(specification):
+
+    leap_input = specification['TARGET_DIR'] + '/leap.in'
+
+    edit_leap_input(specification, leap_input)
+    
+    result = subprocess.check_output(['tleap','-f', leap_input], stderr=subprocess.STDOUT)
+
+    return
+
         

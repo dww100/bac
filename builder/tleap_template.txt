@@ -26,3 +26,4 @@ solvatebox complex TIP3PBOX $WATERBOX
 
 savepdb complex $TARGET_DIR/complex.pdb
 saveamberparm complex $TARGET_DIR/complex.top $TARGET_DIR/complex.crd
+quit

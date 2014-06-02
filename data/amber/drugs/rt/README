@@ -1,0 +1,20 @@
+To create parameter files ("prep files") for a drug molecule using the AMBER9 Antechamber suite and 
+RESP charge assignment, the starting point is a pdb file --- xxx_init.pdb.
+
+Step1: Add hydrogen atoms using the PRODRG web server --- obtain xxx.pdb
+
+Step2: Run Antechamber to generate a Gaussian geometry optimisation input file --- xxx.gau
+
+Step3: Run Gaussian with xxx.gau as input -- this may take up to 3-4 days, or just half a day. At the end of the 
+output file xxx.out the per-atom ESP charge fit is printed - this is what is used in the next step.
+
+Step4: Run Antechamber to produce a "prep" file xxx.prepi using the xxx.out and the xxx.pdb.
+
+Step5: Run parmcheck (also from Amber9) to produce a force field modification file for the ligand xxx.frcmod -- 
+this contains connectivity information (e.g. bonds, torsion angles, etc).
+
+Step6: Use Xleap(Amber 9) to import the prep, frcmod, and pdb files, inspect the structure for consistency and 
+charge neutrality, and generate a topology file xxx.top
+
+
+Sample .pdb (with H-s) .gau, .out, .prepi, .frcmod, and .top files are given for delavirdine in the directory: /sample_del

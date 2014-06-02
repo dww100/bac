@@ -1,0 +1,50 @@
+remark goes here
+MASS
+
+BOND
+cx-na  334.70   1.456       same as c3-na
+
+ANGLE
+cx-cx-na   65.300     116.300   same as cx-cx-n3
+cx-na-cc   62.600     125.090   same as c3-na-cc
+h1-cx-na   49.900     109.450   same as h1-c3-na
+na-cc-nh   73.071     113.415   Calculated with empirical approach
+cc-nh-c2   65.500     124.690   same as c2-nh-c2
+nh-c2-h4   52.000     113.360   same as hc-c2-nh
+nh-c2-cf   69.800     124.990   same as c2-c2-nh
+h4-c2-cf   49.300     124.680   same as c2-c2-h4
+cf-cf-cc   63.800     130.920   same as ce-cf-cf
+cf-cc-c    64.300     126.410   same as c -ce-cf
+n -cc-cf   67.700     126.900   same as c2-cc-n 
+cc-cf-c3   64.300     122.890   same as c2-cf-c3
+
+DIHE
+cx-cx-na-cc   1    0.000         0.000           2.000      same as X -c3-na-X 
+h1-cx-na-cc   1    0.000         0.000           2.000      same as X -c3-na-X 
+cc-cc-cf-cf   1    6.650       180.000           2.000      same as X -ce-cf-X 
+cc-cc-cf-ha   1    6.650       180.000           2.000      same as X -ce-cf-X 
+cf-cf-cc-c    1    6.650       180.000           2.000      same as X -ce-cf-X 
+ha-cf-cc-c    1    6.650       180.000           2.000      same as X -ce-cf-X 
+n -cc-cf-cf   1    6.650       180.000           2.000      same as X -ce-cf-X 
+n -cc-cf-c3   1    6.650       180.000           2.000      same as X -ce-cf-X 
+cc-cf-c3-hc   1    0.000         0.000           2.000      same as X -c2-c3-X 
+cc-cc-cf-c3   1    6.650       180.000           2.000      same as X -ce-cf-X 
+cf-cf-c3-hc   1    0.000         0.000           2.000      same as X -c2-c3-X 
+
+IMPROPER
+cc-cc-na-cx         1.1          180.0         2.0          Using default value
+cc-na-cc-nh         1.1          180.0         2.0          Using default value
+c2-cc-nh-hn         1.1          180.0         2.0          Using default value
+cf-h4-c2-nh         1.1          180.0         2.0          Using default value
+c2-cf-cf-ha         1.1          180.0         2.0          Using default value
+cc-cf-cf-ha         1.1          180.0         2.0          Using default value
+c -cc-cc-cf         1.1          180.0         2.0          Using default value
+cc-n -c -o         10.5          180.0         2.0          General improper torsional angle (2 general atom types)
+c -cc-n -hn         1.1          180.0         2.0          General improper torsional angle (2 general atom types)
+cc-cf-cc-n          1.1          180.0         2.0          Using default value
+c3-cc-cf-cf         1.1          180.0         2.0          Using default value
+
+NONBON
+
+
+

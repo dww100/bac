@@ -13,8 +13,12 @@ def test_load_pdb_file():
   #universe = Universe(topology, trajectory)
   print "PDB file loaded!"
 
+
+
 def test_print_pdb_file():
   print_pdb_file("%s/init_pdbs/pr/1mui_wat.pdb" % data_dir)
+
+
 
 def test_pdb_select_and_merge():
   u = load_pdb("%s/init_pdbs/pr/1mui_wat.pdb" % data_dir)
@@ -27,3 +31,18 @@ def test_pdb_select_and_merge():
   assert_equals(s2[-1].number, s4[-1].number)
   s5 = merge_atom_selections([s2,s1])
   assert_equals(s2[-1].number, s5[-1].number)
+
+
+
+def test_write_pdb_file():
+  u = load_pdb("%s/init_pdbs/pr/1mui_wat.pdb" % data_dir)
+  s = u.selectAtoms("all")
+  write_pdb_file(s, "test.pdb")
+
+
+
+def test_mutation():
+  u = load_pdb("minimal_test.pdb")
+  s = u.selectAtoms("all")
+  s = mutate_residue(s, 'PRO', new_residue_name='ALA')
+  write_pdb_file(s, "test.pdb")

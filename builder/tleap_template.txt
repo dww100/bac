@@ -1,0 +1,28 @@
+source $FF
+source leaprc.gaff
+
+frcmod = loadamberparams $FRCMOD
+loadamberprep $PREP
+
+lig = loadpdb $LIGAND_PDB
+savepdb lig $TARGET_DIR/lig.pdb
+saveamberparm lig $TARGET_DIR/lig.top $TARGET_DIR/lig.crd
+
+rec = loadpdb $RECEPTOR_PDB
+savepdb rec $TARGET_DIR/rec.pdb
+saveamberparm rec $TARGET_DIR/rec.top $TARGET_DIR/rec.crd
+
+com = combine{rec lig}
+savepdb com $TARGET_DIR/com.pdb
+saveamberparm com $TARGET_DIR/com.top $TARGET_DIR/com.crd
+
+sol = loadpdb $SOLVENT_PDB
+complex = combine{com sol}
+
+alignaxes complex
+addions complex Cl- 0.0
+addions complex Na+ 0.0
+solvatebox complex TIP3PBOX $WATERBOX
+
+savepdb complex $TARGET_DIR/complex.pdb
+saveamberparm complex $TARGET_DIR/complex.top $TARGET_DIR/complex.crd

@@ -30,19 +30,18 @@ def collate_mutation_dict(mutation_dict):
         combined mutation.
     """
     out_dict = {}
-    for chain in mutation_dict:
-        mutation_chain_dict = mutation_dict[chain]
-        for residue_key in mutation_chain_dict:
+    for chain_key, chain_dict in mutation_dict.iteritems():
+        for residue_key, residue_mutations in chain_dict.iteritems():
 
             # Sanity test prior to merging the mutations on one residue. 
-            if type(mutation_chain_dict[residue_key]) != str:
-                for i in range(1, len(mutation_chain_dict[residue_key])):
-                    if mutation_chain_dict[residue_key][i-1][1] != mutation_chain_dict[residue_key][i][0]:
-                        print "Error: inconsistent mutation list in: ", residue_key, mutation_chain_dict[residue_key]
+            if type(residue_mutations) != str and len(residue_mutations) > 1:
+                for i in range(1, len(residue_mutations)):
+                    if residue_mutations[i-1][1] != residue_mutations[i][0]:
+                        print "Error: inconsistent mutation list in: ", residue_key, residue_mutations
                         print "This mutation would never completely occur."
                         raise StandardError
 
-            out_dict[residue_key] = mutation_chain_dict[residue_key][0][0] +  mutation_chain_dict[residue_key][-1][-1]
+            out_dict[residue_key] = residue_mutations[0][0] +  residue_mutations[-1][-1]
     return out_dict
 
 

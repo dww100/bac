@@ -27,7 +27,7 @@ def test_mutation_1mui_wat():
   s = u.selectAtoms("segid S")
  
   #ab = mutate_residue(ab, 'PRO', 'ALA')
-  ab = mutate_residue(ab, 1, 'ALA', segid = 'A')
+  ab = mutate_residue(ab, 1, 'PRO', 'ALA', segid = 'A')
   #assert_equals(len(ab)+len(s)+len(x), 1539) #1mui_wat.pdb has 1539 atoms, all of them should have been selected.
 
   write_pdb_file(ab, "ab.pdb")

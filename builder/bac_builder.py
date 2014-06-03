@@ -1,5 +1,5 @@
 from common.pdb_io import *
-from interface import *
+from common.interface import *
 import subprocess
 
 
@@ -24,7 +24,7 @@ def mutate_residue(atomgroup, resnum, original_residue, new_residue_name, segid 
 
     mutations = select_atoms(atomgroup, "not all") 
     for residue in target.residues:
-        if residue.resnames[0] != original_residue:
+        if residue.resnames()[0] != original_residue:
             if segid:
                 print "Incorrect original residue specified in the mutation for " + resnum + "in chain " + segid
             else:
@@ -50,7 +50,7 @@ def mutate_single_residue(atomgroup, new_residue_name):
         if resnames[0] == new_residue_name:
             edited_atomgroup = atomgroup
         else:
-            if new_residue_name = 'GLY':
+            if new_residue_name == 'GLY':
                 edited_atomgroup = select_atoms_by_name(atomgroup, ["C", "CA", "N", "O"])
             else:
                 edited_atomgroup = select_atoms_by_name(atomgroup, ["C", "CA", "N", "O", "CB"])
@@ -124,13 +124,14 @@ def create_topology(input_pdb, protein_chains, mutations, specification, ff='amb
     
     structure = load_pdb(input_pdb)
     
+    for chain in mutations:
     # Need to see what the mutations object looks like this is a placeholder
-    for resnum, mutation in mutations:
-        # mutation is supplied as a list of pairs of one letter aa codes
-        # convert for comprison with structure
-        original_resname = aa1to3[mutation[0]]
-        final_resname = aa1to3[mutation[-1]]
-        structure = mutate_residue(structure, resnum, original_resname, final_resname = mutation[-1])
+        for resnum, mutation in chain:
+            # mutation is supplied as a list of pairs of one letter aa codes
+            # convert for comprison with structure
+            original_resname = aa1to3[mutation[0]]
+            final_resname = aa1to3[mutation[1]]
+            structure = mutate_residue(structure, resnum, original_resname, final_resname, segid = chain)
     
     # Need to think about protonation
     

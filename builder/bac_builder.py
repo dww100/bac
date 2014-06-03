@@ -32,8 +32,8 @@ def mutate_residue(atomgroup, resnum, new_residue_name, segid = None):
 def mutate_single_residue(atomgroup, new_residue_name):
     """
     Mutates the residue into new_residue_name. The only atoms retained are
-    the backbone and CB. If the original resname == new_residue_name the 
-    residue is left untouched.
+    the backbone and CB (unless the new residue is GLY). If the original 
+    resname == new_residue_name the residue is left untouched.
     """    
 
     resnames = atomgroup.resnames()
@@ -42,7 +42,11 @@ def mutate_single_residue(atomgroup, new_residue_name):
         if resnames[0] == new_residue_name:
             edited_atomgroup = atomgroup
         else:
-            edited_atomgroup = select_atoms_by_name(atomgroup, ["C", "CA", "N", "O", "CB"])
+            if new_residue_name = 'GLY':
+                edited_atomgroup = select_atoms_by_name(atomgroup, ["C", "CA", "N", "O"])
+            else:
+                edited_atomgroup = select_atoms_by_name(atomgroup, ["C", "CA", "N", "O", "CB"])
+                
             for t in edited_atomgroup:
                 t.resname = new_residue_name
     else:

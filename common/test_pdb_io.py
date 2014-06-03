@@ -40,9 +40,3 @@ def test_write_pdb_file():
   write_pdb_file(s, "test.pdb")
 
 
-
-def test_mutation():
-  u = load_pdb("minimal_test.pdb")
-  s = u.selectAtoms("all")
-  s = mutate_residue(s, 'PRO', new_residue_name='ALA')
-  write_pdb_file(s, "test.pdb")

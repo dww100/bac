@@ -37,7 +37,7 @@ def merge_atom_selections(selections):
   for s in selections[1:]:
     out += s
 
-  return sort_atom_selection(out) 
+  return mda.core.AtomGroup.AtomGroup(sort_atom_selection(out)) 
 
 
 def select_atoms_by_name(selection, names):

@@ -3,6 +3,12 @@ import subprocess
 
 
 def mutate_residue(atomgroup, resnum, new_residue_name, segid = None):
+    """
+    Mutate the residue resum (in segid) to new_residue_name. The procedure 
+    changes the residue name and retains only backbone and CB atoms (unless 
+    the new and old names match in which case the old atoms are retained). The
+    edited residue is merged back into the atom group and returned.
+    """
 
     unchanged = select_atoms(atomgroup, "not all")    
     
@@ -25,9 +31,9 @@ def mutate_residue(atomgroup, resnum, new_residue_name, segid = None):
     
 def mutate_single_residue(atomgroup, new_residue_name):
     """
-    Mutates the residue(s) into new_residue_name. The only atoms retained are
-    the backbone and CB. If esname == new_residue_name the residue is left 
-    untouched.
+    Mutates the residue into new_residue_name. The only atoms retained are
+    the backbone and CB. If the original resname == new_residue_name the 
+    residue is left untouched.
     """    
 
     resnames = atomgroup.resnames()

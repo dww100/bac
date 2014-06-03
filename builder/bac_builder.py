@@ -107,7 +107,7 @@ def chains_selection(chains):
             select_text += 'segid ' + chain
     return select_text
 
-def split_pdb_chains(strucure, rec_chains, lig_chains, sol_chains):
+def split_pdb_chains(structure, rec_chains, lig_chains, sol_chains):
 
     select_rec = chains_selection(rec_chains)    
     rec = select_atoms(structure, select_rec)
@@ -124,9 +124,9 @@ def create_topology(input_pdb, protein_chains, mutations, specification, ff='amb
     
     structure = load_pdb(input_pdb)
     
-    for chain, residue_list in mutations:
+    for chain, residue_list in mutations.iteritems():
     # Need to see what the mutations object looks like this is a placeholder
-        for resnum, mutation in residue_list:
+        for resnum, mutation in residue_list.iteritems():
             # mutation is supplied as a list of pairs of one letter aa codes
             # convert to three letter for comprison with structure
             original_resname = aa1to3[mutation[0][0]]

@@ -5,7 +5,18 @@ from common.pdb_io import *
 from bac_builder import *
 from operator import itemgetter, attrgetter
 from nose.tools import assert_equals
+import yaml
 
+specification = {
+    'TARGET_DIR':'../test/',
+    'FF':'leaprc.ff03.r1',
+    'FRCMOD':'../data/amber/drugs/pr/resp/lpv/lpv.frcmod',
+    'PREP':'../data/amber/drugs/pr/resp/lpv/lpv.prep',
+    'LIGAND_PDB':'../data/test_lig.pdb',
+    'RECEPTOR_PDB':'../data/test_rec.pdb',
+    'SOLVENT_PDB':'../data/test_sol.pdb',
+    'WATERBOX':'14 iso'
+}
 
 #def test_mutation_all():
 #  u = load_pdb("../data/minimal_test.pdb")
@@ -27,23 +38,18 @@ def test_mutation_1mui_wat():
   s = u.selectAtoms("segid S")
  
   ab = mutate_residue(ab, 1, 'PRO', 'ALA', segid = 'A')
-  assert_equals(len(ab)+len(s)+len(x), 1514) #1mui_wat.pdb has 1514 atoms, all of them should have been selected.
+  assert_equals(len(ab)+len(s)+len(x), 1561) #1mui_wat.pdb has 1561 atoms, all of them should have been selected.
 
   write_pdb_file(ab, "ab.pdb")
   write_pdb_file(x, "x.pdb")
   write_pdb_file(s, "s.pdb")
 
 def test_amber_parameterize():
+    
+    amber_parameterize(specification)
   
-  specification = {
-      'TARGET_DIR':'../test/',
-      'FF':'leaprc.ff03.r1',
-      'FRCMOD':'../data/amber/drugs/pr/resp/lpv/lpv.frcmod',
-      'PREP':'../data/amber/drugs/pr/resp/lpv/lpv.prep',
-      'LIGAND_PDB':'../data/test_lig.pdb',
-      'RECEPTOR_PDB':'../data/test_rec.pdb',
-      'SOLVENT_PDB':'../data/test_sol.pdb',
-      'WATERBOX':'14 iso'
-  }
-  
-  amber_parameterize(specification)
+def test_create_topology():
+    
+    with open('test.yml') as f: mutations = yaml.load(f)
+    create_topology("../data/init_pdbs/pr/1mui_wat.pdb", ['A','B'], mutations, specification, ff='amber')
+    

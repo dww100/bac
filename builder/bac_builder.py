@@ -102,15 +102,17 @@ def split_pdb_chains(strucure, rec_chains, lig_chains, sol_chains):
     
     return rec, lig, sol
     
-def create_topology(input_pdb, mutations, specification, ff='amber'):
+def create_topology(input_pdb, protein_chains, mutations, specification, ff='amber'):
     
     structure = load_pdb(input_pdb)
     
-    #Need to see what the mutations object looks like this is a placeholder
+    # Need to see what the mutations object looks like this is a placeholder
     for mutation in mutations:
         structure = mutate_residue(structure, mutation['resnum'],mutation['final'], mutation['segid'])
-        
-    rec, lig, sol = split_pdb_chains(structure, ['A','B'], ['X'],['S'])
+    
+    # Need to think about protonation
+    
+    rec, lig, sol = split_pdb_chains(structure, protein_chains, ['X'],['S'])
     
     write_pdb_file(rec, specification['RECEPTOR_PDB'])
     write_pdb_file(lig, specification['LIGAND_PDB'])

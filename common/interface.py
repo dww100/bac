@@ -30,8 +30,8 @@ def collate_mutation_dict(mutation_dict):
         combined mutation.
     """
     out_dict = {}
-    for k in mutation_dict:
-        out_dict[k] = mutation_dict[k][0][0] +  mutation_dict[k][-1][-1]
+    for residue_key in mutation_dict:
+        out_dict[residue_key] = mutation_dict[residue_key][0][0] +  mutation_dict[residue_key][-1][-1]
 
     return out_dict
 

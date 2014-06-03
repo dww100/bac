@@ -30,17 +30,19 @@ def collate_mutation_dict(mutation_dict):
         combined mutation.
     """
     out_dict = {}
-    for residue_key in mutation_dict:
+    for chain in mutation_dict:
+        mutation_chain_dict = mutation_dict[chain]
+        for residue_key in mutation_chain_dict:
 
-        # Sanity test prior to merging the mutations on one residue. 
-        if type(mutation_dict[residue_key]) != str:
-            for i in range(1, len(mutation_dict[residue_key])):
-                if mutation_dict[residue_key][i-1][1] != mutation_dict[residue_key][i][0]:
-                    print "Error: inconsistent mutation list in: ", residue_key, mutation_dict[residue_key]
-                    print "This mutation would never completely occur."
-                    raise StandardError
+            # Sanity test prior to merging the mutations on one residue. 
+            if type(mutation_chain_dict[residue_key]) != str:
+                for i in range(1, len(mutation_chain_dict[residue_key])):
+                    if mutation_chain_dict[residue_key][i-1][1] != mutation_chain_dict[residue_key][i][0]:
+                        print "Error: inconsistent mutation list in: ", residue_key, mutation_chain_dict[residue_key]
+                        print "This mutation would never completely occur."
+                        raise StandardError
 
-        out_dict[residue_key] = mutation_dict[residue_key][0][0] +  mutation_dict[residue_key][-1][-1]
+            out_dict[residue_key] = mutation_chain_dict[residue_key][0][0] +  mutation_chain_dict[residue_key][-1][-1]
     return out_dict
 
 
@@ -49,11 +51,16 @@ def write_mutation_to_yaml(mutation_list, filename):
         a yaml file.
     """
     mutation_dict = {}
+    chain_dict = {}
     for m in mutation_list:
-        if not m[1:3] in mutation_dict:
-            mutation_dict[m[1:-1]] = [m[0:1]+m[-1:]]
-        else:
-            mutation_dict[m[1:-1]].append(m[0:1]+m[-1])
+        if len(m) == 1: # Field indicates a single letter (chain)
+            mutation_dict[m] = {}
+            chain_dict = mutation_dict[m]
+        else: # Letter-Number-Letter field indicates mutation in the current chain.
+            if not m[1:3] in chain_dict:
+                chain_dict[m[1:-1]] = [m[0:1]+m[-1:]]
+            else:
+                chain_dict[m[1:-1]].append(m[0:1]+m[-1])
 
     outfile = open(filename, 'w')
     outfile.write(yaml.dump(mutation_dict))

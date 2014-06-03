@@ -40,38 +40,23 @@ def merge_atom_selections(selections):
   return sort_atom_selection(out) 
 
 
-def select_atoms_by_name(selection, resname, names):
-  """ Delete atoms by name in a residue. if resname == "-1" then the atoms are
-  deleted from all residues.
+def select_atoms_by_name(selection, names):
+  """Select atoms by name in a residue.
   """
   assert len(selection) > 0
 
-  news = selection.selectAtoms("not all") #'not all' means NONE in MDAnalysis ;).
+  news = select_atoms(selection, "not all") #'not all' means NONE in MDAnalysis ;).
 
   if(type(names) == str):
-    if resname != "-1":
       for a in selection:
-        if a.resname == resname:
           if a.name == names:
             news += a
-        else:
-          news += a
-    else:
-      for a in selection:
-        if a.name == names:
-          news += a
+          
   if(type(names) == list):
-    if resname != "-1":
       for a in selection:
-        if a.resname == resname:
           if a.name in names:
             news += a
-        else:
-          news += a
-    else:
-      for a in selection:
-        if a.name in names:
-          news += a
+
 
   return news
  

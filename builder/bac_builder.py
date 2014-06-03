@@ -1,8 +1,9 @@
 from common.pdb_io import *
+from interface import *
 import subprocess
 
 
-def mutate_residue(atomgroup, resnum, new_residue_name, segid = None):
+def mutate_residue(atomgroup, resnum, original_residue, new_residue_name, segid = None):
     """
     Mutate the residue resum (in segid) to new_residue_name. The procedure 
     changes the residue name and retains only backbone and CB atoms (unless 
@@ -22,8 +23,15 @@ def mutate_residue(atomgroup, resnum, new_residue_name, segid = None):
         target = select_atoms(atomgroup, select_text)
 
     mutations = select_atoms(atomgroup, "not all") 
-    for resid in target.residues:
-        mutations += mutate_single_residue(resid, new_residue_name)
+    for residue in target.residues:
+        if residue.resnames[0] != original_residue:
+            if segid:
+                print "Incorrect original residue specified in the mutation for " + resnum + "in chain " + segid
+            else:
+                print "Incorrect original residue specified in the mutation for " + resnum
+            raise StandardError
+        else:
+            mutations += mutate_single_residue(residue, new_residue_name)
     
     mutated = merge_atom_selections([unchanged, mutations])
     
@@ -117,8 +125,12 @@ def create_topology(input_pdb, protein_chains, mutations, specification, ff='amb
     structure = load_pdb(input_pdb)
     
     # Need to see what the mutations object looks like this is a placeholder
-    for mutation in mutations:
-        structure = mutate_residue(structure, mutation['resnum'],mutation['final'], mutation['segid'])
+    for resnum, mutation in mutations:
+        # mutation is supplied as a list of pairs of one letter aa codes
+        # convert for comprison with structure
+        original_resname = aa1to3[mutation[0]]
+        final_resname = aa1to3[mutation[-1]]
+        structure = mutate_residue(structure, resnum, original_resname, final_resname = mutation[-1])
     
     # Need to think about protonation
     

@@ -124,13 +124,14 @@ def create_topology(input_pdb, protein_chains, mutations, specification, ff='amb
     
     structure = load_pdb(input_pdb)
     
+    for chain in mutations:
     # Need to see what the mutations object looks like this is a placeholder
-    for resnum, mutation in mutations:
-        # mutation is supplied as a list of pairs of one letter aa codes
-        # convert for comprison with structure
-        original_resname = aa1to3[mutation[0]]
-        final_resname = aa1to3[mutation[-1]]
-        structure = mutate_residue(structure, resnum, original_resname, final_resname = mutation[-1])
+        for resnum, mutation in chain:
+            # mutation is supplied as a list of pairs of one letter aa codes
+            # convert for comprison with structure
+            original_resname = aa1to3[mutation[0]]
+            final_resname = aa1to3[mutation[1]]
+            structure = mutate_residue(structure, resnum, original_resname, final_resname, segid = chain)
     
     # Need to think about protonation
     

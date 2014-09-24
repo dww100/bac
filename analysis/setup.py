@@ -1,4 +1,8 @@
-from distutils.core import setup
+try:
+    from setuptools import setup
+except ImportError:
+    from distutils.core import setup
+
 from distutils.extension import Extension
 
 import numpy
@@ -25,5 +29,6 @@ ext_modules = [Extension("pyqcprot_bac", ["pyqcprot_bac.{}".format('pyx' if use_
 setup(
   name = 'Python qcprot_bac module',
   cmdclass = cmdclass,
-  ext_modules = ext_modules
+  ext_modules = ext_modules,
+  install_requires = ['MDAnalysis'],
 )

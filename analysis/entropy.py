@@ -1,34 +1,56 @@
+# -*- coding: utf-8 -*-
 """
-Example code to demonstrate aligning a trajectory to a reference structure and
-calculating the rmsd using PyQCPROT
+Created on Wed Sep 24 11:33:56 2014
 
-Requires MDAnalysis
-http://code.google.com/p/mdanalysis
-
+@author: dave
 """
 
-import numpy
-import MDAnalysis as mda
-import pyqcprot_bac as qcp
 import sys
+import numpy
+import pyqcprot_bac as qcp
 
-topology=sys.argv[1]
-reference=sys.argv[2]
-trajectory_file=sys.argv[3]
+import MDAnalysis as mda
+import MDAnalysis.analysis.align as align
+
+topology = sys.argv[1]
+init_pdb = sys.argv[2]
+traj_file = sys.argv[3]
+lig_name = sys.argv[4]
+
+filter_lig = 'resname ' + lig_name
+filter_structure = 'protein or ' + filter_lig
+
+init = mda.Universe(topology, init_pdb) 
+traj = mda.Universe(topology, traj_file) 
+frames = traj.trajectory
+nframes = len(frames)
 
 
-#ref = mda.Universe('com.top','avg.pdb')   # reference structure 
-#traj = mda.Universe('com.top', 'test.dcd')         # trajectory 
-ref = mda.Universe(topology,reference)   # reference structure 
-traj = mda.Universe(topology, trajectory_file)         # trajectory 
+align.rms_fit_trj(traj, init, select="protein and backbone")
+
+ref = init
+avg_select = ref.selectAtoms(filter_structure)
+
+align_struct = traj.selectAtoms(filter_structure)
+
+p_avg = numpy.zeros_like(avg_select.positions)
+
+# do a quick average of the protein
+for ts in frames:
+    p_avg += align_struct.positions
+p_avg /= nframes
+
+# temporarily replace positions with the average
+avg_select.set_positions(p_avg)
+
+# just make sure that we have clean original coordinates again (start at the beginning)
+#traj.trajectory.rewind()
 
 # We are assuming trajectory is pre-aligned on the protein backbone atoms
 # Now fit the drug onto itself
-select = 'not protein'
-selections = {'reference':select,'target':select}
 
-frames = traj.trajectory
-nframes = len(frames)
+selections = {'reference':filter_lig,'target':filter_lig}
+
 rmsd = numpy.zeros((nframes,))
 com_track = numpy.zeros((nframes,3))
 angle_track = numpy.zeros((nframes,3))
